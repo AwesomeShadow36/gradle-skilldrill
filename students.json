@@ -1,0 +1,34 @@
+[
+  {
+    "firstName": "Braxton",
+    "lastName": "Grover",
+    "courseList": [
+      {
+        "number": 2263,
+        "subject": "CS",
+        "title": "Advncd OO Prog"
+      },
+      {
+        "number": 1187,
+        "subject": "Math",
+        "title": "Applied Discrete Struct"
+      }
+    ]
+  },
+  {
+    "firstName": "Isaac",
+    "lastName": "Griffith",
+    "courseList": [
+      {
+        "number": 2201,
+        "subject": "ECON",
+        "title": "Principles of MacroEconomics"
+      },
+      {
+        "number": 1337,
+        "subject": "CS",
+        "title": "System Programming and Assembly"
+      }
+    ]
+  }
+]

@@ -3,12 +3,103 @@
  */
 package edu.isu.cs.cs2263;
 
-public class App {
-    public String getGreeting() {
-        return "Hello World!";
-    }
+import java.io.*;
+import java.util.*;
+import javafx.application.*;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.geometry.Pos;
+import javafx.scene.control.*;
+import javafx.stage.*;
+import javafx.scene.*;
+import javafx.scene.layout.*;
 
-    public static void main(String[] args) {
-        System.out.println(new App().getGreeting());
+/*Braxton Grover
+  CS2263
+  1/23/2021
+ */
+public class App extends Application {
+
+
+
+
+
+    public static void main(String[] args) throws IOException {
+        //Add in a couple of students with a couple of courses, semi flexible
+        // to add more it would also need to be added to the Student array
+        Student s1= new Student("Braxton", "Grover");
+        s1.addCourse(new Course(2263, "CS", "Advncd OO Prog"));
+        s1.addCourse(new Course(1187, "Math", "Applied Discrete Struct"));
+        Student s2= new Student("Isaac", "Griffith");
+        s2.addCourse(new Course(2201, "ECON", "Principles of MacroEconomics"));
+        s2.addCourse(new Course(1337, "CS", "System Programming and Assembly"));
+
+        //setting up IOmanager object and adding the students to a list
+        IOManager iOmang= new IOManager();
+        Student[] students= new Student[]{s1, s2};
+        //making a specific place to put my file
+        String filePath= "C:\\Users\\Braxton\\Desktop\\Git School repos\\gradle-sd\\gradle-skilldrill\\students.json";
+        //this is testing that the file is made in the right format
+        iOmang.writeData(filePath, students);
+
+
+        Application.launch(args);
+    }
+    public void start(Stage stage) throws Exception {
+
+        //making a copy of this stuff for use in the stage
+        IOManager iOmang= new IOManager();
+        String filePath= "C:\\Users\\Braxton\\Desktop\\Git School repos\\gradle-sd\\gradle-skilldrill\\students.json";
+        //pull back from the file for display on stage
+        ArrayList<Student> display= iOmang.readData(filePath);
+
+        //sets the window title for the app
+        stage.setTitle("Course View");
+
+        //setting up the list on the left
+        ListView<String> Students= new ListView<String>();
+        //uses this to set up individual items
+        ObservableList<String> names= FXCollections.observableArrayList(display.get(0).toString(),
+                display.get(1).toString());
+        Students.setItems(names);
+        Students.setPrefHeight(50);
+        Students.setPrefWidth(100);
+
+        //need a list view for the courses reacting to a button
+        ListView<String> course= new ListView<String>();
+        course.setPrefWidth(150);
+        //making the button size and location
+        Button load= new Button();
+        load.setAlignment(Pos.BOTTOM_RIGHT);
+        load.setPrefWidth(75);
+        load.setPrefHeight(25);
+        load.setText("Load Data");
+        //sets action of button
+        load.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                int index =Students.getSelectionModel().getSelectedIndex();
+                ObservableList<String> courses= FXCollections.observableArrayList(display.get(index).getCourseList().get(0).toString(),display.get(index).getCourseList().get(1).toString());
+                course.setItems(courses);
+
+            }
+        });
+
+
+        //Lays out eh scene
+        Label taking= new Label("Is Taking");
+        HBox hori= new HBox(Students, taking, course, load);
+        hori.setSpacing(20);
+        hori.setAlignment(Pos.CENTER);
+        Scene scene= new Scene(hori, 500, 200);
+        stage.setScene(scene);
+
+
+        //shows everything set on stage
+        stage.show();
+
+
     }
 }
